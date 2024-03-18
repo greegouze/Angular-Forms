@@ -1,0 +1,119 @@
+<div class="flex justify-center h-full w-full items-center">
+  <!-- ngForm est un module qui fournit des directives et des classe pour travailler avec les forms
+  permet de creer des form dynamique et de valider les données saisie -->
+  <form
+    class="w-96 shadow-lg p-3 rounded-md flex flex-col gap-5"
+    #myForm="ngForm"
+    (ngSubmit)="myForm.valid && onSubmit()"
+  >
+    <!-- permet de suivre l'etat de mon form ngform en définitive me permet d'avoir 
+      une vue d'ensemble de l'etat de mon form -->
+    <div class="p-3 border-2">
+      <p>Form submitted ? {{ myForm.submitted }}</p>
+      <p>Form valid ? {{ myForm.valid }}</p>
+      <p>Form invalid ? {{ myForm.invalid }}</p>
+    </div>
+
+    <span class="text-center font-semibold">Form Validator</span>
+    <!-- fieldset permet de regrouper une partie d'un formulaire et d'associer une legend décrivant ce groupe  -->
+    <fieldset class="h-[40%] flex gap-2 flex-col">
+      <!-- <legend class="text-center font-bold">Choose your title</legend> -->
+      <label class="mt-2" for="title-order">Title</label>
+      <!-- [(ngModel)] permet de lier la valeur d'un champ à une propriété d'1 composant -->
+      <input
+        class="border-2 rounded-sm"
+        id="title-order"
+        name="title-order"
+        text="text"
+        required
+        minlength="5"
+        [(ngModel)]="newOrder.title"
+        #title="ngModel"
+        required
+        minlength="5"
+      />
+      <div
+        class="flex flex-col text-rose-700"
+        *ngIf="myForm.submitted && title.errors"
+      >
+        <span *ngIf="title.errors?.['required']"
+          >Ce champs est obligatoire *</span
+        >
+        <span *ngIf="title.errors?.['minlength']"
+          >La longueur minimal doit être de 5 caractères</span
+        >
+      </div>
+      <!-- two way bading ([]) l'input sera lié à la propriété correspondante de ma variable newOrder -->
+    </fieldset>
+
+    <fieldset class="h-[40%] flex gap-2 flex-col">
+      <label for="quantity-order">Quantité</label>
+      <input
+        class="border-2 rounded-sm"
+        type="number"
+        name="quantity-order"
+        id="quantity-order"
+        [(ngModel)]="newOrder.quantity"
+        #quantity="ngModel"
+        required
+      />
+      <div class="flex flex-col text-rose-700" *ngIf="quantity.errors">
+        <span *ngIf="quantity.errors?.['required']"
+          >Ce champs est obligatoire *</span
+        >
+      </div>
+    </fieldset>
+
+    <fieldset class="h-[40%] flex gap-2 flex-col">
+      <label for="date-order">Date de commande</label>
+      <input
+        class="border-2 rounded-sm"
+        type="date"
+        name="date-order"
+        id="date-order"
+        [(ngModel)]="newOrder.date"
+        required
+        #date="ngModel"
+      />
+      <div class="flex flex-col text-rose-700" *ngIf="date.errors">
+        <span *ngIf="date.errors?.['required']"
+          >Ce champs est obligatoire *</span
+        >
+        <span *ngIf="date.errors?.['minlength']"
+          >La longueur minimal doit être de 5 caractères</span
+        >
+      </div>
+    </fieldset>
+
+    <fieldset class="h-[40%] flex gap-2 flex-col">
+      <label for="quantity-order">Contact</label>
+      <input
+        class="border-2 rounded-sm"
+        type="email"
+        name="contact-order"
+        id="contact-order"
+        [(ngModel)]="newOrder.contact"
+        required
+        #email="ngModel"
+        email
+      />
+      <div class="flex flex-col text-rose-700" *ngIf="email.errors">
+        <span *ngIf="email.errors?.['required']"
+          >Ce champs est obligatoire *</span
+        >
+        <span *ngIf="email.errors?.['email']"
+          >L'adresse email doit être valide</span
+        >
+      </div>
+    </fieldset>
+
+    <div class="h-[20%] w-full flex justify-between p-6">
+      <button class="border-2 px-2 py-1 rounded-md" type="reset">
+        Restaurer
+      </button>
+      <button class="border-2 px-2 py-1 rounded-md" type="submit">
+        Sauvegarder
+      </button>
+    </div>
+  </form>
+</div>

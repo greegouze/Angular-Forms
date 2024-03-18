@@ -1,0 +1,146 @@
+<div class="flex justify-center h-full w-full items-center">
+  <form
+    class="w-96 shadow-lg p-3 rounded-md flex flex-col gap-5"
+    #myForm="ngForm"
+    [formGroup]="orderForm"
+    (ngSubmit)="myForm.valid && onSubmit()"
+  >
+    <div class="p-3 border-2">
+      <p>Form submitted ? {{ myForm.submitted }}</p>
+      <p>Form valid ? {{ myForm.valid }}</p>
+      <p>Form invalid ? {{ myForm.invalid }}</p>
+    </div>
+
+    <span class="text-center font-semibold">Form Validator</span>
+
+    <fieldset class="h-[40%] flex gap-2 flex-col">
+      <label class="mt-2" for="title-order">Title</label>
+
+      <input
+        class="border-2 rounded-sm"
+        name="title-order"
+        type="text"
+        formControlName="title"
+      />
+      <div
+        class="flex flex-col text-rose-700"
+        *ngIf="orderForm.controls.title.errors && myForm.submitted"
+      >
+        <span *ngIf="orderForm.controls.title.errors?.['required']"
+          >Ce champs est obligatoire *</span
+        >
+        <span *ngIf="orderForm.controls.title.errors?.['minlength']"
+          >La longueur minimal doit être de 5 caractères</span
+        >
+      </div>
+    </fieldset>
+
+    <fieldset class="h-[40%] flex gap-2 flex-col">
+      <label for="quantity-order">Quantité</label>
+      <input
+        class="border-2 rounded-sm"
+        type="number"
+        name="quantity-order"
+        formControlName="quantity"
+      />
+      <div
+        class="flex flex-col text-rose-700"
+        *ngIf="orderForm.controls.quantity.errors && myForm.submitted"
+      >
+        <span *ngIf="orderForm.controls.quantity.errors?.['required']"
+          >Ce champs est obligatoire *</span
+        >
+      </div>
+    </fieldset>
+
+    <fieldset class="h-[40%] flex gap-2 flex-col">
+      <label for="date-order">Date de commande</label>
+      <input
+        class="border-2 rounded-sm"
+        type="date"
+        name="date-order"
+        formControlName="date"
+      />
+      <div
+        class="flex flex-col text-rose-700"
+        *ngIf="orderForm.controls.date.errors && myForm.submitted"
+      >
+        <span *ngIf="orderForm.controls.date.errors?.['required']"
+          >Ce champs est obligatoire *</span
+        >
+      </div>
+    </fieldset>
+
+    <fieldset class="h-[40%] flex gap-2 flex-col">
+      <label for="quantity-order">Contact</label>
+      <input
+        class="border-2 rounded-sm"
+        type="email"
+        name="contact-order"
+        formControlName="contact"
+      />
+      <div
+        class="flex flex-col text-rose-700"
+        *ngIf="orderForm.controls.contact.errors && myForm.submitted"
+      >
+        <span *ngIf="orderForm.controls.contact.errors?.['required']"
+          >Ce champs est obligatoire *</span
+        >
+        <span *ngIf="orderForm.controls.contact.errors?.['email']"
+          >L'adresse email doit être valide</span
+        >
+      </div>
+    </fieldset>
+
+    <div formArrayName="payments">
+      <div
+        class="font-semibold text-lg h-12 bg-emerald-600 w-full flex justify-center hover:scale-[1.01] duration-100 cursor-pointer rounded-md"
+      >
+        <button (click)="addPayements()" class="text-white">
+          Ajouter une date de paiement +
+        </button>
+      </div>
+
+      <div
+        [formGroupName]="i"
+        *ngFor="let payment of payments.controls; let i = index"
+      >
+        <fieldset class="h-[40%] flex gap-2 flex-col">
+          <label for="date-{{ i }}">Date :</label>
+          <input
+            class="border-2 rounded-sm"
+            type="date"
+            name="date-{{ i }}"
+            formControlName="date"
+          />
+          <span
+            *ngIf="payment.get('date')?.errors?.['required'] && myForm.submitted"
+          >
+            Le champ est requis
+          </span>
+          <span *ngIf="payment.get('date')?.errors?.['min'] != undefined">
+            La date doit être dans le futur
+          </span>
+        </fieldset>
+        <fieldset class="h-[40%] flex gap-2 flex-col">
+          <label for="amount-{{ i }}">Amount :</label>
+          <input
+            class="border-2 rounded-sm"
+            type="text"
+            name="amount-{{ i }}"
+            formControlName="amount"
+          />
+        </fieldset>
+      </div>
+    </div>
+
+    <div class="h-[20%] w-full flex justify-between p-6">
+      <button class="border-2 px-2 py-1 rounded-md" type="reset">
+        Restaurer
+      </button>
+      <button class="border-2 px-2 py-1 rounded-md" type="submit">
+        Sauvegarder
+      </button>
+    </div>
+  </form>
+</div>
